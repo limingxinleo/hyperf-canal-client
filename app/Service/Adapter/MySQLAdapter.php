@@ -9,6 +9,14 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-return [
-    // Hyperf\AsyncQueue\Process\ConsumerProcess::class,
-];
+namespace App\Service\Adapter;
+
+use xingwenge\canal_php\Message;
+
+class MySQLAdapter implements AdapterInterface
+{
+    public function handle(Message $message): bool
+    {
+        return true;
+    }
+}
