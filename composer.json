@@ -26,7 +26,6 @@
         "hyperf/constants": "2.2.*",
         "hyperf/contract": "2.2.*",
         "hyperf/database": "2.2.*",
-        "hyperf/db": "2.2.*",
         "hyperf/db-connection": "2.2.*",
         "hyperf/di": "2.2.*",
         "hyperf/dispatcher": "2.2.*",

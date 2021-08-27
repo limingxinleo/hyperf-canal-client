@@ -16,7 +16,6 @@ use Han\Utils\Service;
 use Psr\Container\ContainerInterface;
 use xingwenge\canal_php\CanalClient;
 use xingwenge\canal_php\CanalConnectorFactory;
-use xingwenge\canal_php\Fmt;
 
 class CanalService extends Service
 {
@@ -27,7 +26,7 @@ class CanalService extends Service
 
     public function run(AdapterInterface $adapter)
     {
-        retry(INF, function () {
+        retry(INF, function () use ($adapter) {
             try {
                 $this->logger->info('Start Canal Client...');
 
@@ -38,13 +37,14 @@ class CanalService extends Service
                 $client->subscribe($this->canal->clientId, $this->canal->destination, $this->canal->filter);
 
                 while (true) {
-                    $message = $client->get(100);
-                    if ($entries = $message->getEntries()) {
-                        foreach ($entries as $entry) {
-                            Fmt::println($entry);
-                        }
-                    }
-                    sleep(1);
+                    $adapter->handle($client->get(100));
+
+                    // if ($entries = $message->getEntries()) {
+                    //     foreach ($entries as $entry) {
+                    //         $adapter->handle($entry);
+                    //     }
+                    // }
+                    // sleep(1);
                 }
 
                 $client->disConnect();

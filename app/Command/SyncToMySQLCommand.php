@@ -47,6 +47,6 @@ class SyncToMySQLCommand extends HyperfCommand
 
         $canal = new Canal(host: '127.0.0.1', port: 11111, destination: 'test');
         $service = new CanalService($this->container, $canal);
-        $service->run(new MySQLAdapter());
+        $service->run(new MySQLAdapter($pool));
     }
 }
