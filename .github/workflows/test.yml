@@ -9,8 +9,8 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest ]
-        php-version: [ '7.3', '7.4', '8.0' ]
-        swoole-version: [ '4.5.11', '4.6.7', '4.7.0' ]
+        php-version: [ '8.0' ]
+        swoole-version: [ '4.6.7', '4.7.0' ]
       max-parallel: 9
     env:
       SW_VERSION: ${{ matrix.swoole-version }}
