@@ -38,13 +38,6 @@ class CanalService extends Service
 
                 while (true) {
                     $adapter->handle($client->get(100));
-
-                    // if ($entries = $message->getEntries()) {
-                    //     foreach ($entries as $entry) {
-                    //         $adapter->handle($entry);
-                    //     }
-                    // }
-                    // sleep(1);
                 }
 
                 $client->disConnect();
