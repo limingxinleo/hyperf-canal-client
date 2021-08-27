@@ -39,13 +39,15 @@ class SyncToMySQLCommand extends HyperfCommand
         parent::configure();
         $this->setDescription('同步数据到 MySQL');
         $this->addOption('pool', 'P', InputOption::VALUE_OPTIONAL, '连接池', 'default');
+        $this->addOption('destination', 'D', InputOption::VALUE_OPTIONAL, 'destination', 'example');
     }
 
     public function handle()
     {
         $pool = $this->input->getOption('pool');
+        $dest = $this->input->getOption('destination');
 
-        $canal = new Canal(host: '127.0.0.1', port: 11111, destination: 'test');
+        $canal = new Canal(host: env('CANAL_HOST', '127.0.0.1'), port: (int) env('CANAL_PORT', 11111), destination: $dest);
         $service = new CanalService($this->container, $canal);
         $service->run(new MySQLAdapter($pool));
     }

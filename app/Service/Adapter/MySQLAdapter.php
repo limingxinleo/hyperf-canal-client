@@ -56,14 +56,14 @@ class MySQLAdapter implements AdapterInterface
         /** @var RowData $rowData */
         foreach ($rowChange->getRowDatas() as $rowData) {
             switch ($evenType) {
-                case EventType::DELETE:
-                    $this->deleteColumn($rowData->getBeforeColumns(), $schema, $table);
-                    break;
                 case EventType::INSERT:
                     $this->insertColumn($rowData->getAfterColumns(), $schema, $table);
                     break;
                 case EventType::UPDATE:
                     $this->updateColumn($rowData->getAfterColumns(), $schema, $table);
+                    break;
+                case EventType::DELETE:
+                    // $this->deleteColumn($rowData->getBeforeColumns(), $schema, $table);
                     break;
             }
         }
