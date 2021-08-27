@@ -67,6 +67,8 @@ class MySQLAdapter implements AdapterInterface
                     break;
             }
         }
+
+        echo sprintf('logfile: %s, offset: %s', $header->getLogfileName(), $header->getLogfileOffset()) . PHP_EOL;
     }
 
     protected function updateColumn($columns, string $schema, string $table)
