@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace App\Listener;
 
 use Hyperf\Database\Events\QueryExecuted;
-use Hyperf\Event\Annotation\Listener;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Logger\LoggerFactory;
 use Hyperf\Utils\Arr;
@@ -20,9 +19,6 @@ use Hyperf\Utils\Str;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
-/**
- * @Listener
- */
 class DbQueryExecutedListener implements ListenerInterface
 {
     /**
