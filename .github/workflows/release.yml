@@ -18,7 +18,6 @@ jobs:
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
@@ -27,4 +26,6 @@ jobs:
       - name: Build
         run: docker build -t biz-skeleton .
       - name: Push image to GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./push.sh
