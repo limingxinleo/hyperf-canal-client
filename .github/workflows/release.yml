@@ -24,5 +24,7 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
+      - name: Build
+        run: docker build -t biz-skeleton .
       - name: Push image to GitHub
         run: ./push.sh
