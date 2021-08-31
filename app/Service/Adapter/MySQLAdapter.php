@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Service\Adapter;
 
+use Carbon\Carbon;
 use Com\Alibaba\Otter\Canal\Protocol\Column;
 use Com\Alibaba\Otter\Canal\Protocol\Entry;
 use Com\Alibaba\Otter\Canal\Protocol\EntryType;
@@ -68,7 +69,7 @@ class MySQLAdapter implements AdapterInterface
             }
         }
 
-        echo sprintf('logfile: %s, offset: %s', $header->getLogfileName(), $header->getLogfileOffset()) . PHP_EOL;
+        echo sprintf('[%s] logfile: %s, offset: %s', Carbon::now()->toDateTimeString(), $header->getLogfileName(), $header->getLogfileOffset()) . PHP_EOL;
     }
 
     protected function updateColumn($columns, string $schema, string $table)
