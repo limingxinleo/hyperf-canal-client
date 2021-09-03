@@ -53,15 +53,18 @@ class MySQLAdapter implements AdapterInterface
         $header = $entry->getHeader();
         $schema = $header->getSchemaName();
         $table = $header->getTableName();
+        $count = 0;
 
         /** @var RowData $rowData */
         foreach ($rowChange->getRowDatas() as $rowData) {
             switch ($evenType) {
                 case EventType::INSERT:
                     $this->insertColumn($rowData->getAfterColumns(), $schema, $table);
+                    ++$count;
                     break;
                 case EventType::UPDATE:
                     $this->updateColumn($rowData->getAfterColumns(), $schema, $table);
+                    ++$count;
                     break;
                 case EventType::DELETE:
                     // $this->deleteColumn($rowData->getBeforeColumns(), $schema, $table);
@@ -69,7 +72,7 @@ class MySQLAdapter implements AdapterInterface
             }
         }
 
-        echo sprintf('[%s] logfile: %s, offset: %s', Carbon::now()->toDateTimeString(), $header->getLogfileName(), $header->getLogfileOffset()) . PHP_EOL;
+        echo sprintf('[%s] logfile: %s, offset: %s, count: %d', Carbon::now()->toDateTimeString(), $header->getLogfileName(), $header->getLogfileOffset(), $count) . PHP_EOL;
     }
 
     protected function updateColumn($columns, string $schema, string $table)
