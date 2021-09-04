@@ -55,6 +55,11 @@ class MySQLAdapter implements AdapterInterface
         $table = $header->getTableName();
         $count = 0;
 
+        if (in_array($schema, ['information_schema', 'mysql', 'performance_schema', 'sys'])) {
+            echo sprintf('[%s] logfile: %s, offset: %s, skip: %s', Carbon::now()->toDateTimeString(), $header->getLogfileName(), $header->getLogfileOffset(), $schema) . PHP_EOL;
+            return;
+        }
+
         /** @var RowData $rowData */
         foreach ($rowChange->getRowDatas() as $rowData) {
             switch ($evenType) {
