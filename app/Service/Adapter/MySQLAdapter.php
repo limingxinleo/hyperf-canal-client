@@ -89,7 +89,7 @@ class MySQLAdapter implements AdapterInterface
             if ($column->getIsKey()) {
                 $query->where($column->getName(), $column->getValue());
             } else {
-                $item[$column->getName()] = $column->getValue();
+                $item[$column->getName()] = $column->getIsNull() ? null : $column->getValue();
             }
         }
 
@@ -118,7 +118,7 @@ class MySQLAdapter implements AdapterInterface
         $item = [];
         /** @var Column $column */
         foreach ($columns as $column) {
-            $item[$column->getName()] = $column->getValue();
+            $item[$column->getName()] = $column->getIsNull() ? null : $column->getValue();
         }
 
         try {
