@@ -78,6 +78,9 @@ class MySQLAdapter implements AdapterInterface
         }
 
         echo sprintf('[%s] logfile: %s, offset: %s, count: %d', Carbon::now()->toDateTimeString(), $header->getLogfileName(), $header->getLogfileOffset(), $count) . PHP_EOL;
+        if ($count > 10 && $rowChange->getSql()) {
+            di()->get(StdoutLoggerInterface::class)->warning(sprintf('SQL: %s, count: %d', $rowChange->getSql(), $count));
+        }
     }
 
     protected function updateColumn($columns, string $schema, string $table)
