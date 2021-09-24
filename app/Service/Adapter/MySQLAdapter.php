@@ -18,12 +18,17 @@ use Com\Alibaba\Otter\Canal\Protocol\EntryType;
 use Com\Alibaba\Otter\Canal\Protocol\EventType;
 use Com\Alibaba\Otter\Canal\Protocol\RowChange;
 use Com\Alibaba\Otter\Canal\Protocol\RowData;
+use Fan\PDOExceptionChecker;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\DbConnection\Db;
+use Hyperf\Di\Annotation\Inject;
 use xingwenge\canal_php\Message;
 
 class MySQLAdapter implements AdapterInterface
 {
+    #[Inject]
+    protected PDOExceptionChecker $checker;
+
     public function __construct(public string $pool)
     {
     }
@@ -64,7 +69,7 @@ class MySQLAdapter implements AdapterInterface
         foreach ($rowChange->getRowDatas() as $rowData) {
             switch ($evenType) {
                 case EventType::INSERT:
-                    $this->insertColumn($rowData->getAfterColumns(), $schema, $table);
+                    $this->insertColumn($rowData->getAfterColumns(), $schema, $table, true);
                     ++$count;
                     break;
                 case EventType::UPDATE:
@@ -116,7 +121,7 @@ class MySQLAdapter implements AdapterInterface
         }
     }
 
-    protected function insertColumn($columns, string $schema, string $table)
+    protected function insertColumn($columns, string $schema, string $table, bool $orUpdate = false): void
     {
         $item = [];
         /** @var Column $column */
@@ -127,6 +132,9 @@ class MySQLAdapter implements AdapterInterface
         try {
             Db::connection($this->pool)->table("{$schema}.{$table}")->insert($item);
         } catch (\Throwable $exception) {
+            if ($orUpdate && $this->checker->isDuplicateEntryForPrimaryKey($exception)) {
+                $this->updateColumn($columns, $schema, $table);
+            }
             di()->get(StdoutLoggerInterface::class)->error($exception->getMessage());
         }
     }
