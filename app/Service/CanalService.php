@@ -47,11 +47,14 @@ class CanalService extends Service
                 return;
             }
 
+            $this->logger->info('Listening...');
+
             if (! $this->listening) {
                 return;
             }
 
             if ($this->syncTimestamp < time() - 60) {
+                $this->logger->info('同步失败');
                 $this->feishu->alert('同步失败!');
             }
         });
