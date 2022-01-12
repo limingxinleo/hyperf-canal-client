@@ -57,7 +57,7 @@ class CanalService extends Service
                         break;
                     }
 
-                    if ($this->syncTimestamp < time() - 60) {
+                    if ($this->syncTimestamp < time() - 3600) {
                         echo '同步失败' . PHP_EOL;
                         $this->syncTimestamp = time();
                         $this->feishu->alert('同步失败!');
