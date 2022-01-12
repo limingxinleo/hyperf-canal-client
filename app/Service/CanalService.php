@@ -86,7 +86,9 @@ class CanalService extends Service
 
                 while (true) {
                     $this->syncTimestamp = time();
-                    $adapter->handle($client->get(100));
+                    if (! $adapter->handle($client->get(100))) {
+                        sleep(1);
+                    }
                 }
 
                 $client->disConnect();
@@ -94,7 +96,7 @@ class CanalService extends Service
                 $this->logger->error((string) $exception);
                 throw $exception;
             }
-        }, 1);
+        }, 100);
 
         $this->listening = false;
     }

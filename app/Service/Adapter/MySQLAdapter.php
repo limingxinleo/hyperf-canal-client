@@ -39,9 +39,11 @@ class MySQLAdapter implements AdapterInterface
             foreach ($entries as $entry) {
                 $this->handleEntry($entry);
             }
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     protected function handleEntry(Entry $entry)
