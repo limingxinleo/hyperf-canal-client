@@ -94,7 +94,7 @@ class CanalService extends Service
                 $this->logger->error((string) $exception);
                 throw $exception;
             }
-        });
+        }, 1);
 
         $this->listening = false;
     }
