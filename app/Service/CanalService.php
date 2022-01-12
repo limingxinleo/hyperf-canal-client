@@ -42,20 +42,30 @@ class CanalService extends Service
             return;
         }
 
+        $this->listening = true;
+
         go(function () {
-            if (CoordinatorManager::until(Constants::WORKER_EXIT)->yield(60)) {
-                return;
-            }
+            try {
+                while (true) {
+                    if (CoordinatorManager::until(Constants::WORKER_EXIT)->yield(60)) {
+                        break;
+                    }
 
-            $this->logger->info('Listening...');
+                    echo '监听中, At: ' . $this->syncTimestamp . PHP_EOL;
 
-            if (! $this->listening) {
-                return;
-            }
+                    if (! $this->listening) {
+                        break;
+                    }
 
-            if ($this->syncTimestamp < time() - 60) {
-                $this->logger->info('同步失败');
-                $this->feishu->alert('同步失败!');
+                    if ($this->syncTimestamp < time() - 60) {
+                        echo '同步失败' . PHP_EOL;
+                        $this->syncTimestamp = time();
+                        $this->feishu->alert('同步失败!');
+                    }
+                }
+            } catch (\Throwable) {
+                echo '监听结束' . PHP_EOL;
+                $this->listening = false;
             }
         });
     }
