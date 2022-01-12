@@ -47,7 +47,7 @@ class CanalService extends Service
                 return;
             }
 
-            if ($this->syncTimestamp < time() - 3600) {
+            if ($this->syncTimestamp < time() - 60) {
                 $this->feishu->alert('同步失败!');
             }
         });
