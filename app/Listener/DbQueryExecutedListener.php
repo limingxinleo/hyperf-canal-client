@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace App\Listener;
 
 use Hyperf\Database\Events\QueryExecuted;
+use Hyperf\Event\Annotation\Listener;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Logger\LoggerFactory;
 use Hyperf\Utils\Arr;
@@ -21,10 +22,7 @@ use Psr\Log\LoggerInterface;
 
 class DbQueryExecutedListener implements ListenerInterface
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(ContainerInterface $container)
     {
