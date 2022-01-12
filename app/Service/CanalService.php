@@ -13,15 +13,44 @@ namespace App\Service;
 
 use App\Service\Adapter\AdapterInterface;
 use Han\Utils\Service;
+use Hyperf\Coordinator\Constants;
+use Hyperf\Coordinator\CoordinatorManager;
 use Psr\Container\ContainerInterface;
 use xingwenge\canal_php\CanalClient;
 use xingwenge\canal_php\CanalConnectorFactory;
 
 class CanalService extends Service
 {
+    protected FeishuService $feishu;
+
+    protected int $syncTimestamp;
+
+    protected bool $listening = false;
+
     public function __construct(ContainerInterface $container, protected Canal $canal)
     {
         parent::__construct($container);
+
+        $this->feishu = $container->get(FeishuService::class);
+
+        $this->syncTimestamp = time();
+    }
+
+    public function listen()
+    {
+        if ($this->listening) {
+            return;
+        }
+
+        go(function () {
+            if (CoordinatorManager::until(Constants::WORKER_EXIT)->yield(60)) {
+                return;
+            }
+
+            if ($this->syncTimestamp < time() - 3600) {
+                $this->feishu->alert('同步失败!');
+            }
+        });
     }
 
     public function run(AdapterInterface $adapter)
@@ -37,6 +66,7 @@ class CanalService extends Service
                 $client->subscribe($this->canal->clientId, $this->canal->destination, $this->canal->filter);
 
                 while (true) {
+                    $this->syncTimestamp = time();
                     $adapter->handle($client->get(100));
                 }
 
