@@ -47,6 +47,10 @@ class CanalService extends Service
                 return;
             }
 
+            if (! $this->listening) {
+                return;
+            }
+
             if ($this->syncTimestamp < time() - 60) {
                 $this->feishu->alert('同步失败!');
             }
@@ -55,6 +59,8 @@ class CanalService extends Service
 
     public function run(AdapterInterface $adapter)
     {
+        $this->listen();
+
         retry(INF, function () use ($adapter) {
             try {
                 $this->logger->info('Start Canal Client...');
@@ -76,5 +82,7 @@ class CanalService extends Service
                 throw $exception;
             }
         });
+
+        $this->listening = false;
     }
 }
