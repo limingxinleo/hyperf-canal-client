@@ -85,9 +85,10 @@ class CanalService extends Service
                 $client->subscribe($this->canal->clientId, $this->canal->destination, $this->canal->filter);
 
                 while (true) {
-                    $this->syncTimestamp = time();
                     if (! $adapter->handle($client->get(100))) {
                         sleep(1);
+                    } else {
+                        $this->syncTimestamp = time();
                     }
                 }
 
