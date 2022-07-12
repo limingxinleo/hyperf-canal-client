@@ -44,7 +44,7 @@
         "hyperf/utils": "3.0.*",
         "limingxinleo/feishu": "^4.0",
         "limingxinleo/hyperf-utils": "^3.1",
-        "limingxinleo/pdo-exceptioin-checker": "^0.1",
+        "limingxinleo/pdo-exception-checker": "^0.1",
         "xingwenge/canal_php": "^1.0"
     },
     "require-dev": {
