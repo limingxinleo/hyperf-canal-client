@@ -23,6 +23,8 @@ class CanalService extends Service
 {
     protected FeishuService $feishu;
 
+    protected WeChatService $wx;
+
     protected int $syncTimestamp;
 
     protected bool $listening = false;
@@ -32,6 +34,7 @@ class CanalService extends Service
         parent::__construct($container);
 
         $this->feishu = $container->get(FeishuService::class);
+        $this->wx = $container->get(WeChatService::class);
 
         $this->syncTimestamp = time();
     }
@@ -61,6 +64,7 @@ class CanalService extends Service
                         echo '同步失败' . PHP_EOL;
                         $this->syncTimestamp = time();
                         $this->feishu->alert('同步失败!');
+                        $this->wx->alert('同步失败!');
                     }
                 }
             } catch (\Throwable) {
