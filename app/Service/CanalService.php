@@ -12,13 +12,12 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Service\Adapter\AdapterInterface;
+use App\Service\Adapter\CanalConnector;
 use Han\Utils\Service;
 use Hyperf\Coordinator\Constants;
 use Hyperf\Coordinator\CoordinatorManager;
 use Psr\Container\ContainerInterface;
 use Throwable;
-use xingwenge\canal_php\CanalClient;
-use xingwenge\canal_php\CanalConnectorFactory;
 
 class CanalService extends Service
 {
@@ -83,7 +82,7 @@ class CanalService extends Service
             try {
                 $this->logger->info('Start Canal Client...');
 
-                $client = CanalConnectorFactory::createClient(CanalClient::TYPE_SWOOLE);
+                $client = new CanalConnector();
 
                 $client->connect($this->canal->host, $this->canal->port);
                 $client->checkValid();

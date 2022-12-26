@@ -45,7 +45,8 @@
         "limingxinleo/feishu": "^4.0",
         "limingxinleo/hyperf-utils": "^3.1",
         "limingxinleo/pdo-exception-checker": "^0.1",
-        "xingwenge/canal_php": "^1.0"
+        "xingwenge/canal_php": "^1.0",
+        "ext-sockets": "*"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
