@@ -16,6 +16,7 @@ use Han\Utils\Service;
 use Hyperf\Coordinator\Constants;
 use Hyperf\Coordinator\CoordinatorManager;
 use Psr\Container\ContainerInterface;
+use Throwable;
 use xingwenge\canal_php\CanalClient;
 use xingwenge\canal_php\CanalConnectorFactory;
 
@@ -97,7 +98,7 @@ class CanalService extends Service
                 }
 
                 $client->disConnect();
-            } catch (\Throwable $exception) {
+            } catch (Throwable $exception) {
                 $this->logger->error((string) $exception);
                 throw $exception;
             }

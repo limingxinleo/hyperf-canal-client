@@ -22,6 +22,7 @@ use Fan\PDOExceptionChecker;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\DbConnection\Db;
 use Hyperf\Di\Annotation\Inject;
+use Throwable;
 use xingwenge\canal_php\Message;
 
 class MySQLAdapter implements AdapterInterface
@@ -108,7 +109,7 @@ class MySQLAdapter implements AdapterInterface
             if ($ret === 0) {
                 $this->insertColumn($columns, $schema, $table);
             }
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             di()->get(StdoutLoggerInterface::class)->error($exception->getMessage());
         }
     }
@@ -133,7 +134,7 @@ class MySQLAdapter implements AdapterInterface
 
         try {
             Db::connection($this->pool)->table("{$schema}.{$table}")->insert($item);
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             if ($orUpdate && $this->checker->isDuplicateEntryForPrimaryKey($exception)) {
                 $this->updateColumn($columns, $schema, $table);
             }
